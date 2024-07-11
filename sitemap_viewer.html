@@ -31,7 +31,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            fetch('https://drive.google.com/uc?export=view&id=1YD7tRg4HuXVgHyB1kKFxYH7cnlZHEqkN') // Use the direct link to your sitemap.xml
+            fetch('https://raw.githubusercontent.com/bonaresski/sitemap-viewer/main/sitemap.xml') // Use the direct link to your sitemap.xml
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();
