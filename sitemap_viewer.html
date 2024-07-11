@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .sitemap {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sitemap li {
+            margin: 5px 0;
+        }
+        .url {
+            font-weight: bold;
+        }
+        .details {
+            margin-left: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sitemap</h1>
+    <ul id="sitemap" class="sitemap"></ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('https://drive.google.com/uc?export=view&id=1YD7tRg4HuXVgHyB1kKFxYH7cnlZHEqkN') // Use the direct link to your sitemap.xml
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const xml = parser.parseFromString(data, 'text/xml');
+                    const urlset = xml.getElementsByTagName('url');
+                    const sitemapElement = document.getElementById('sitemap');
+
+                    for (let i = 0; i < urlset.length; i++) {
+                        const urlElement = urlset[i];
+                        const loc = urlElement.getElementsByTagName('loc')[0].textContent;
+                        const lastmod = urlElement.getElementsByTagName('lastmod')[0]?.textContent || 'N/A';
+                        const changefreq = urlElement.getElementsByTagName('changefreq')[0]?.textContent || 'N/A';
+                        const priority = urlElement.getElementsByTagName('priority')[0]?.textContent || 'N/A';
+
+                        const li = document.createElement('li');
+                        const urlDiv = document.createElement('div');
+                        urlDiv.className = 'url';
+                        urlDiv.textContent = loc;
+
+                        const detailsDiv = document.createElement('div');
+                        detailsDiv.className = 'details';
+                        detailsDiv.innerHTML = `Last Modified: ${lastmod} | Change Frequency: ${changefreq} | Priority: ${priority}`;
+
+                        li.appendChild(urlDiv);
+                        li.appendChild(detailsDiv);
+                        sitemapElement.appendChild(li);
+                    }
+                })
+                .catch(error => console.error('Error fetching sitemap:', error));
+        });
+    </script>
+</body>
+</html>
